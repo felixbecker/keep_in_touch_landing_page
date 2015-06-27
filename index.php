@@ -2,7 +2,7 @@
 
 
   if (isset($_POST) && isset($_SESSION)) {
-    $mail_to = 'subscribe@gesund-informiert.de';
+    $mail_to = 'enter mail address here';
     $mail_subject = 'Neuer E-Mail Subscriber';
     $flash = <<< EOT
       <div id="flash_ok" class="alert alert-success" role="alert">
