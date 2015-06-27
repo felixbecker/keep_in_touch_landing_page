@@ -44,57 +44,9 @@
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Gesund Informiert</title>
+   <title>Landing page title</title>
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-   <style media="screen">
-     body{
-       background: transparent;
-       padding-top: 40px;
-       background-color: #eee;
-     }
-     header{
-       padding-top: 40px;
-       padding-bottom: 40px;
-     }
-
-     .btn, input[type=text]{
-       border-radius: 0px;
-       -webkit-border-radius: 0px;
-       -moz-border-radius: 0px;
-     }
-
-     .btn-pink {
-       background: #c43041;
-       border-color: #c43041;
-       color:white;
-     }
-
-     .btn-pink:hover {
-       color:white;
-       background: #c43041;
-       border-color: #c43041;
-     }
-     .btn-pink:active{
-       color: white;
-     }
-
-     .btn-pink:visited{
-       color: white;
-     }
-
-     form{
-       padding-top: 25px;
-       padding-bottom: 25px;
-     }
-     .footer{
-       color:#ccc;
-       padding-top: 20px;
-       padding-bottom: 20px;
-     }
-     h3{
-       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-     }
-   </style>
+   <link rel="stylesheet" href="css/styles.css" media="screen" charset="utf-8">
  </head>
  <body>
    <div class="container">
