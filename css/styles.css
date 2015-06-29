@@ -14,24 +14,6 @@ header{
   -moz-border-radius: 0px;
 }
 
-.btn-pink {
-  background: #c43041;
-  border-color: #c43041;
-  color:white;
-}
-
-.btn-pink:hover {
-  color:white;
-  background: #c43041;
-  border-color: #c43041;
-}
-.btn-pink:active{
-  color: white;
-}
-
-.btn-pink:visited{
-  color: white;
-}
 
 form{
   padding-top: 25px;
