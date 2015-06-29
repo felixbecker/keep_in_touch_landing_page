@@ -1,41 +1,70 @@
 <?php
-/*
 
-  if (isset($_POST) && isset($_SESSION)) {
-    $mail_to = 'enter mail address here';
-    $mail_subject = 'Neuer E-Mail Subscriber';
-    $flash = <<< EOT
-      <div id="flash_ok" class="alert alert-success" role="alert">
-        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
-        <span class="sr-only">Success:</span>
-        Danke!
-      </div>
-    EOT;
 
-    if ($_POST['token'] == $_SESSION['token']) {
+$flash = <<< FLASH
+  <div id="flash_ok" class="alert alert-success" role="alert">
+     <div class="text-center">
+     <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+     <span class="sr-only">Success:</span>
+     Danke!
+     </div>
+   </div>
+FLASH;
+  session_start();
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-      foreach ($_POST as $key => $value) {
-        # code...
+    $key = $_POST['tokenkey'];
+    $token = $_POST['token'];
+    if ($token == $_SESSION[$key]) {
+
+      $email = $_POST['sign_up_email'];
+      $name = $_POST['sign_up_name'];
+
+      if(preg_match("/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i",$email)
+        && strlen(trim($name)) > 0){
+          $mail_to = '### ADD Target E-Mail ###';
+          $mail_subject = '### DEFINE SUBJECT LINE FOR MAILS';
+
+
+        $mail_text = "## DEFINE TEXT FOR MAIL \r\n Name: ".$name." - E-Mail: ".$email;
+        $headers = "From: ".$email."\r\n";
+        $mail_was_sent = mail($mail_to,$mail_subject,$mail_text,$headers);
+
+        if ($mail_was_sent) {
+          header('Location: ./?done=success', true, 303);
+          exit;
+
+        }else {
+          header('Location: ./?done=error',true,303);
+          exit;
+
+        }
+
+      }else{
+        header('Location: ./?done=error',true,303);
+        exit;
 
       }
 
-      $mail_text = "Neuer Newsletter Subscriber: ".$name." mit E-Mail: ".$email;
+      exit;
 
-      $mail_was_sent = @mail($mail_to,$mail_subject,$mail_text);
-      if ($mail_was_sent) {
 
-      }
+    }else {
+      header('Location: ./?done=error',true,303);
+      exit;
+
     }
 
-  }else {
-    session_start();
+  }else{
 
-    $token = md5(uniqid(rand(),TRUE));
-    $_SESSION['token'] = $token;
-    $_SESSION['token_time'] = time();
-    echo "Session was started";
+      $token = md5(uniqid(rand(),TRUE));
+      $key = substr(md5(microtime()),rand(0,26),5);
+      $_SESSION[$key] = $token;
+      $_SESSION['token_time'] = time();
+      $done = $_GET['done'];
+
   }
-*/
+
 
 
  ?>
@@ -64,30 +93,40 @@
          <p class="text-center">
            Have some info teaser text here
          </p>
-           <form action="" id="signUpform" class="form-inline text-center">
-             <input type="hidden" name="token" value="<?php echo $token; ?>">
-             <div class="form-group">
-                 <label class="sr-only" for="name">Name</label>
-                 <input name="sign_up_name" id="sign_up_name" type="text" class="form-control" placeholder="Name">
-             </div>
-             <div class="form-group">
-               <label class="sr-only" for="email">Name</label>
-               <input name="sign_up_email" id="sign_up_email" type="text" class="form-control" placeholder="E-Mail">
-             </div>
-           <button type="submit" class="btn btn-pink">und los!</button>
-           <p>
-             <div id="flash_err" class="alert alert-danger" role="alert">
-               <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-               <span class="sr-only">Error:</span>
-               Enter a valid name and email address
-             </div>
 
-             <?php
-              if ($mail_was_sent) { echo $flash;}
-              ?>
-           </p>
+         <?php
+               $showErrorFlash = $done != 'error' || $done == NULL ? ' hide':'';
+               if ($done == 'success') {
+                 echo $flash;
+               }else{
+                 ?>
 
-           </form>
+                 <form action="index.php" method="post" id="signUpform" class="form-inline text-center">
+                   <input type="hidden" name="token" value="<?php echo $token; ?>">
+                   <input type="hidden" name="tokenkey" value="<?php echo $key; ?>">
+                   <div class="form-group">
+                       <label class="sr-only" for="name">Name</label>
+                       <input name="sign_up_name" id="sign_up_name" type="text" class="form-control" placeholder="Name">
+                   </div>
+                   <div class="form-group">
+                     <label class="sr-only" for="email">Name</label>
+                     <input name="sign_up_email" id="sign_up_email" type="text" class="form-control" placeholder="E-Mail">
+                   </div>
+                 <button type="submit" class="btn btn-pink">und los!</button>
+                 <p>
+                   <div id="flash_err" class="alert alert-danger <?php echo $showErrorFlash ?>" role="alert">
+                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                     <span class="sr-only">Error:</span>
+                     Enter a valid name and email address
+                   </div>
+                </p>
+              </form>
+
+                 <?php
+               }
+               ?>
+
+
          <p class="text-center">Promise and do not sell or send the email</p>
          <p class="text-center footer">
            &copy; Add copy information here
@@ -98,6 +137,6 @@
      </div>
  </div>
 
- <script type="text/javascript" src="scripts/main.js"></script>
+ <script type="text/javascript" src="js/script.min.js"></script>
  </body>
  </html>
